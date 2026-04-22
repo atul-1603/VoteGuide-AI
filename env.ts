@@ -1,0 +1,32 @@
+import { createEnv } from "@t3-oss/env-nextjs";
+import { z } from "zod";
+
+export const env = createEnv({
+  server: {
+    GEMINI_API_KEY: z.string().min(1),
+    GOOGLE_CALENDAR_CLIENT_SECRET: z.string().optional(),
+    GOOGLE_TRANSLATE_API_KEY: z.string().optional(),
+  },
+  client: {
+    NEXT_PUBLIC_FIREBASE_API_KEY: z.string().min(1),
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: z.string().min(1),
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: z.string().min(1),
+    NEXT_PUBLIC_FIREBASE_APP_ID: z.string().min(1),
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string().optional(),
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().optional(),
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID: z.string().min(1),
+    NEXT_PUBLIC_GOOGLE_CALENDAR_CLIENT_ID: z.string().optional(),
+  },
+  runtimeEnv: {
+    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    GOOGLE_CALENDAR_CLIENT_SECRET: process.env.GOOGLE_CALENDAR_CLIENT_SECRET,
+    GOOGLE_TRANSLATE_API_KEY: process.env.GOOGLE_TRANSLATE_API_KEY,
+    NEXT_PUBLIC_FIREBASE_API_KEY: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    NEXT_PUBLIC_FIREBASE_APP_ID: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
+    NEXT_PUBLIC_GOOGLE_CLIENT_ID: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+  },
+});
