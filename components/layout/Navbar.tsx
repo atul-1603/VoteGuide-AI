@@ -7,6 +7,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
@@ -88,20 +89,22 @@ export function Navbar() {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent className="w-56" align="end">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1 leading-none">
-                    <p className="font-medium">{user.displayName}</p>
-                    <p className="w-[200px] truncate text-sm text-muted-foreground">
-                      {user.email}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-                <DropdownMenuItem asChild>
-                  <Link href="/dashboard" className="cursor-pointer">Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem asChild>
-                  <Link href="/journey" className="cursor-pointer">My Journey</Link>
-                </DropdownMenuItem>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1 leading-none">
+                      <p className="font-medium">{user.displayName}</p>
+                      <p className="w-[200px] truncate text-sm text-muted-foreground">
+                        {user.email}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  <DropdownMenuItem asChild>
+                    <Link href="/dashboard" className="cursor-pointer">Dashboard</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/journey" className="cursor-pointer">My Journey</Link>
+                  </DropdownMenuItem>
+                </DropdownMenuGroup>
                 <DropdownMenuItem className="text-destructive cursor-pointer" onClick={logOut}>
                   <LogOut className="mr-2 h-4 w-4" />
                   <span>Log out</span>
