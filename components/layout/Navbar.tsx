@@ -14,8 +14,19 @@ import {
 import { changeLanguage } from "@/components/layout/GoogleTranslate";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
+import { usePathname } from "next/navigation";
+
 export function Navbar() {
   const { user, logOut } = useAuthStore();
+  const pathname = usePathname();
+
+  const navLinks = [
+    { href: "/dashboard", label: "Dashboard", protected: true },
+    { href: "/timeline", label: "Timeline" },
+    { href: "/chat", label: "AI Chat" },
+    { href: "/find-station", label: "Find Station" },
+    { href: "/journey", label: "My Journey" },
+  ];
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/60 backdrop-blur-md notranslate">
@@ -25,18 +36,19 @@ export function Navbar() {
           <span>VoteGuide</span>
         </Link>
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
-          <Link href="/timeline" className="text-muted-foreground hover:text-foreground transition-colors">
-            Timeline
-          </Link>
-          <Link href="/chat" className="text-muted-foreground hover:text-foreground transition-colors">
-            AI Chat
-          </Link>
-          <Link href="/find-station" className="text-muted-foreground hover:text-foreground transition-colors">
-            Find Station
-          </Link>
-          <Link href="/journey" className="text-muted-foreground hover:text-foreground transition-colors">
-            My Journey
-          </Link>
+          {navLinks.map((link) => {
+            if (link.protected && !user) return null;
+            const isActive = pathname === link.href;
+            return (
+              <Link 
+                key={link.href} 
+                href={link.href} 
+                className={`${isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"} transition-colors`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
         </div>
         <div className="flex items-center gap-4">
           <DropdownMenu>

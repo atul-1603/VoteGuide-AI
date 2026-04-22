@@ -51,7 +51,10 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     return NextResponse.json({ eventLink: data.htmlLink });
   } catch (error) {
-    console.error("Calendar route error:", error);
-    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+    console.error("❌ Calendar route error:", error);
+    return NextResponse.json({ 
+      error: "Internal Server Error", 
+      details: error instanceof Error ? error.message : String(error) 
+    }, { status: 500 });
   }
 }

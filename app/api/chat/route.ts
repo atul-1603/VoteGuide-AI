@@ -120,10 +120,10 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    console.error("Chat API error:", error);
+    console.error("❌ Chat API error:", error);
     const message = error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json(
-      { error: message },
+      { error: message, details: error instanceof Error ? error.stack : undefined },
       { status: 500 }
     );
   }

@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.24.1",
     "@googlemaps/js-api-loader": "^2.0.2",
     "@hookform/resolvers": "^5.2.2",
+    "@radix-ui/react-progress": "^1.1.8",
     "@radix-ui/react-slot": "^1.2.4",
     "@t3-oss/env-nextjs": "^0.13.11",
     "canvas-confetti": "^1.9.4",
