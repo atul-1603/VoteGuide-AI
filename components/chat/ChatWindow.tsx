@@ -23,9 +23,9 @@ export function ChatWindow() {
           <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <h2 className="font-semibold text-white">VoteGuide Assistant</h2>
         </div>
-        <span className="text-xs text-muted-foreground bg-white/5 px-2 py-1 rounded-md">Gemini 2.0 Flash</span>
+        <span className="text-xs text-muted-foreground bg-white/5 px-2 py-1 rounded-md">Gemini 2.5 Flash</span>
       </div>
-      
+
       <ScrollArea className="flex-1 p-6" ref={scrollRef}>
         <div className="flex flex-col gap-6 max-w-3xl mx-auto pb-4">
           {messages.map((message) => (

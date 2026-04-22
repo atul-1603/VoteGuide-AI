@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 const features = [
   {
     title: "AI Chat Assistant",
-    description: "Get instant answers about voter registration, ID requirements, and election laws powered by Gemini 2.0 Flash.",
+    description: "Get instant answers about voter registration, ID requirements, and election laws powered by Gemini 2.5 Flash.",
     icon: MessageSquare,
   },
   {
@@ -42,7 +42,7 @@ export function FeaturesGrid() {
     <section className="py-24 bg-background relative overflow-hidden">
       <div className="absolute top-1/4 left-0 w-96 h-96 bg-primary/10 rounded-full blur-[128px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-0 w-96 h-96 bg-secondary/10 rounded-full blur-[128px] pointer-events-none" />
-      
+
       <div className="container relative z-10">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <h2 className="font-serif text-3xl md:text-5xl font-bold mb-4 text-white">Everything You Need to Vote</h2>
