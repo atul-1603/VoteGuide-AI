@@ -3,7 +3,7 @@ import { z } from "zod";
 
 export const env = createEnv({
   server: {
-    GEMINI_API_KEY: z.string().min(1),
+    GEMINI_API_KEY: z.string().optional(),
     GOOGLE_CALENDAR_CLIENT_SECRET: z.string().optional(),
     GOOGLE_TRANSLATE_API_KEY: z.string().optional(),
   },

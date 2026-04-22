@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { env } from "@/env";
+import { z } from "zod";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,11 +9,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    if (!env.GOOGLE_TRANSLATE_API_KEY) {
+    const apiKeySchema = z.string().min(1);
+    const apiKeyResult = apiKeySchema.safeParse(process.env.GOOGLE_TRANSLATE_API_KEY);
+    
+    if (!apiKeyResult.success) {
       return NextResponse.json({ translatedText: text }); // Mock/fallback if no key
     }
 
-    const url = `https://translation.googleapis.com/language/translate/v2?key=${env.GOOGLE_TRANSLATE_API_KEY}`;
+    const apiKey = apiKeyResult.data;
+
+    const url = `https://translation.googleapis.com/language/translate/v2?key=${apiKey}`;
     
     const response = await fetch(url, {
       method: "POST",

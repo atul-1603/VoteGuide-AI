@@ -1,5 +1,5 @@
-import { env } from "@/env";
 import { NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
 
 export const runtime = "edge";
 
@@ -11,19 +11,23 @@ Format your responses using clear markdown (bolding, bullet points) to make them
 
 export async function POST(req: NextRequest) {
   try {
+    // Validate API Key inside the handler for runtime availability in Cloud Run
+    const apiKeySchema = z.string().min(1, "GEMINI_API_KEY is required");
+    const apiKeyResult = apiKeySchema.safeParse(process.env.GEMINI_API_KEY);
+
+    if (!apiKeyResult.success) {
+      console.error("GEMINI_API_KEY is missing or invalid");
+      return NextResponse.json(
+        { error: "Gemini API key is not configured correctly. Please check your Cloud Run environment variables." },
+        { status: 500 }
+      );
+    }
+
+    const apiKey = apiKeyResult.data;
     const { messages } = await req.json();
 
     if (!messages || !Array.isArray(messages)) {
       return NextResponse.json({ error: "Invalid request format" }, { status: 400 });
-    }
-
-    const apiKey = env.GEMINI_API_KEY;
-    if (!apiKey || apiKey === "dummy_value") {
-      console.error("GEMINI_API_KEY is missing or invalid");
-      return NextResponse.json(
-        { error: "Gemini API key is not configured correctly. Please check your .env.local file and restart the server." },
-        { status: 500 }
-      );
     }
 
     // Format messages for Gemini API
