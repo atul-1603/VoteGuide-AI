@@ -7,6 +7,7 @@ interface Props {
   zoom: number;
   isLoaded: boolean;
   onMarkerClick: (stationId: string) => void;
+  destinationId?: string | null;
 }
 
 const mockStations = [
@@ -15,10 +16,11 @@ const mockStations = [
   { id: "3", name: "High School Hall", latOffset: 0.002, lngOffset: -0.006, booth: "145C" },
 ];
 
-export function StationMap({ center, zoom, isLoaded, onMarkerClick }: Props) {
+export function StationMap({ center, zoom, isLoaded, onMarkerClick, destinationId }: Props) {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const markersRef = useRef<google.maps.marker.AdvancedMarkerElement[]>([]);
+  const directionsRendererRef = useRef<google.maps.DirectionsRenderer | null>(null);
 
   useEffect(() => {
     if (!isLoaded || !mapRef.current) return;
@@ -79,6 +81,54 @@ export function StationMap({ center, zoom, isLoaded, onMarkerClick }: Props) {
       markersRef.current.push(marker);
     });
   }, [map, center, isLoaded, onMarkerClick]);
+
+  // Handle Directions
+  useEffect(() => {
+    if (!map || !isLoaded) return;
+
+    if (!directionsRendererRef.current) {
+      directionsRendererRef.current = new window.google.maps.DirectionsRenderer({
+        map,
+        suppressMarkers: true,
+        polylineOptions: {
+          strokeColor: "#3b82f6",
+          strokeWeight: 5,
+        },
+      });
+    }
+
+    if (destinationId) {
+      const station = mockStations.find(s => s.id === destinationId);
+      if (station) {
+        const destination = {
+          lat: center.lat + station.latOffset,
+          lng: center.lng + station.lngOffset,
+        };
+
+        const directionsService = new window.google.maps.DirectionsService();
+        directionsService.route(
+          {
+            origin: center,
+            destination: destination,
+            travelMode: window.google.maps.TravelMode.DRIVING,
+          },
+          (
+            result: google.maps.DirectionsResult | null,
+            status: google.maps.DirectionsStatus
+          ) => {
+            if (status === window.google.maps.DirectionsStatus.OK && result) {
+              directionsRendererRef.current?.setDirections(result);
+              // Hide other markers if needed, or just let them stay
+            } else {
+              console.error("Directions request failed:", status);
+            }
+          }
+        );
+      }
+    } else {
+      directionsRendererRef.current?.setDirections(null);
+    }
+  }, [map, isLoaded, destinationId, center]);
 
   return <div ref={mapRef} className="w-full h-full min-h-[400px] rounded-2xl overflow-hidden border border-white/10" />;
 }

@@ -91,17 +91,22 @@ export default function TimelinePage() {
           <div className="md:hidden absolute left-0 top-0 bottom-0 w-[2px] bg-white/10" />
 
           <div className="space-y-12">
-            {filteredEvents.map((event, index) => (
-              <div key={event.id} className={`flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
-                {/* Empty space for alternating layout */}
-                <div className="hidden md:block flex-1" />
-                
-                {/* Event Card */}
-                <div className="flex-1">
-                  <TimelineEvent event={event} onAddToCalendar={handleAddToCalendar} />
+            {filteredEvents.map((event, index) => {
+              const isNextUpcoming = event.id === filteredEvents.find(e => new Date(e.date) > new Date())?.id;
+              return (
+                <div key={event.id} className={`flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
+                  {/* Empty space for alternating layout */}
+                  <div className="hidden md:block flex-1" />
+                  
+                  {/* Event Card */}
+                  <div className="flex-1">
+                    <div className={isNextUpcoming ? "ring-2 ring-primary/50 rounded-lg p-1 animate-pulse" : ""}>
+                      <TimelineEvent event={event} onAddToCalendar={handleAddToCalendar} />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>

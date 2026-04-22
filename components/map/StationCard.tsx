@@ -4,6 +4,7 @@ import { MapPin, Navigation, Clock, ShieldAlert, Phone } from "lucide-react";
 
 interface Props {
   stationId: string | null;
+  onGetDirections?: () => void;
 }
 
 interface StationDetails {
@@ -20,7 +21,7 @@ const mockStationDetails: Record<string, StationDetails> = {
   "3": { name: "High School Hall", address: "Near Market Square", booth: "145C", distance: "1.5 km", accessible: false },
 };
 
-export function StationCard({ stationId }: Props) {
+export function StationCard({ stationId, onGetDirections }: Props) {
   if (!stationId) {
     return (
       <Card className="bg-card/40 backdrop-blur-md border-white/10 h-full flex flex-col items-center justify-center p-8 text-center min-h-[300px]">
@@ -70,7 +71,10 @@ export function StationCard({ stationId }: Props) {
         </div>
 
         <div className="mt-auto pt-4">
-          <Button className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20">
+          <Button 
+            className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
+            onClick={onGetDirections}
+          >
             <Navigation className="w-4 h-4 mr-2" />
             Get Directions ({station.distance})
           </Button>

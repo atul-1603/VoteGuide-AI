@@ -16,7 +16,7 @@ export function useCalendarAuth() {
         const google = (window as any).google;
         if (google?.accounts?.oauth2) {
           const client = google.accounts.oauth2.initTokenClient({
-            client_id: env.NEXT_PUBLIC_FIREBASE_APP_ID, // Assuming using same client ID or fallback
+            client_id: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
             scope: "https://www.googleapis.com/auth/calendar.events",
             callback: (tokenResponse: any) => {
               if (tokenResponse.error !== undefined) {
@@ -37,7 +37,7 @@ export function useCalendarAuth() {
     } else {
       const google = (window as any).google;
       const client = google.accounts.oauth2.initTokenClient({
-        client_id: env.NEXT_PUBLIC_FIREBASE_APP_ID,
+        client_id: env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
         scope: "https://www.googleapis.com/auth/calendar.events",
         callback: (tokenResponse: any) => {
           if (tokenResponse.error !== undefined) {

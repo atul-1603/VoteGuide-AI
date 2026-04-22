@@ -9,9 +9,11 @@ export interface TimelineEvent {
   id: string;
   phase: string;
   date: string;
+  endDate?: string;
   title: string;
   description: string;
   details: string[];
+  states?: string[];
 }
 
 export interface JourneyStep {

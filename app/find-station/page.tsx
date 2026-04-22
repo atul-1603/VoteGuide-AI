@@ -13,6 +13,7 @@ export default function FindStationPage() {
   const [center, setCenter] = useState<google.maps.LatLngLiteral>(DEFAULT_CENTER);
   const [zoom, setZoom] = useState(12);
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null);
+  const [showDirections, setShowDirections] = useState(false);
 
   const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
     if (place.geometry?.location) {
@@ -22,6 +23,7 @@ export default function FindStationPage() {
       });
       setZoom(15);
       setSelectedStationId(null);
+      setShowDirections(false);
     }
   };
 
@@ -45,7 +47,10 @@ export default function FindStationPage() {
         </div>
         
         <div className="flex-1 p-6 overflow-y-auto bg-gradient-to-b from-transparent to-background/50">
-          <StationCard stationId={selectedStationId} />
+          <StationCard 
+            stationId={selectedStationId} 
+            onGetDirections={() => setShowDirections(true)}
+          />
         </div>
       </div>
 
@@ -60,7 +65,11 @@ export default function FindStationPage() {
             center={center}
             zoom={zoom}
             isLoaded={isLoaded}
-            onMarkerClick={setSelectedStationId}
+            onMarkerClick={(id) => {
+              setSelectedStationId(id);
+              setShowDirections(false);
+            }}
+            destinationId={showDirections ? selectedStationId : null}
           />
         )}
       </div>

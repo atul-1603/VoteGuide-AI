@@ -18,7 +18,7 @@ export function useGoogleMaps() {
       setOptions({
         key: env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
         v: "weekly",
-        libraries: ["places", "marker"],
+        libraries: ["places", "marker", "routes"],
       });
       isApiOptionsSet = true;
     }
@@ -27,6 +27,7 @@ export function useGoogleMaps() {
       importLibrary("maps"),
       importLibrary("places"),
       importLibrary("marker"),
+      importLibrary("routes"),
     ])
       .then(() => {
         setIsLoaded(true);
