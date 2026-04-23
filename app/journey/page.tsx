@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect } from "react";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useJourneyStore } from "@/store/useJourneyStore";
+import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useJourneyStore } from "@/features/journey/store/useJourneyStore";
 import { journeySteps } from "@/data/journey-steps";
-import { JourneyProgress } from "@/components/journey/JourneyProgress";
-import { StepCard } from "@/components/journey/StepCard";
-import { CompletionCelebration } from "@/components/journey/CompletionCelebration";
-import { ShareCard } from "@/components/journey/ShareCard";
+import { JourneyProgress } from "@/features/journey/components/JourneyProgress";
+import { StepCard } from "@/features/journey/components/StepCard";
+import { CompletionCelebration } from "@/features/journey/components/CompletionCelebration";
+import { ShareCard } from "@/features/journey/components/ShareCard";
 
 export default function JourneyPage() {
   const { user } = useAuthStore();

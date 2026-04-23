@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { timelineEvents } from "@/data/timeline";
-import { TimelineEvent } from "@/components/timeline/TimelineEvent";
+import { TimelineEvent } from "@/features/timeline/components/TimelineEvent";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
-import { useCalendarAuth } from "@/hooks/useCalendarAuth";
+import { useCalendarAuth } from "@/features/timeline/hooks/useCalendarAuth";
 import { Button } from "@/components/ui/button";
 
 const PHASES = ["All", "Registration", "Campaigning", "Polling", "Results"];

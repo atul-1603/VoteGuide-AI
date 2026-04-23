@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarDays } from "lucide-react";
 import { timelineEvents } from "@/data/timeline";
 import { TimelineEvent } from "@/types/election";
+import { calculateTimeLeft } from "@/lib/date-utils";
 
 export function HeroSection() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -39,22 +40,10 @@ export function HeroSection() {
       const eventDate = new Date(nextEvent.date);
       const endDate = nextEvent.endDate ? new Date(nextEvent.endDate) : null;
       
-      // If currently ongoing (now is between start and end), count down to end
       const isOngoing = endDate && now >= eventDate && now <= endDate;
-      const targetTime = isOngoing ? endDate.getTime() : eventDate.getTime();
+      const targetTime = isOngoing ? endDate : eventDate;
       
-      const difference = targetTime - now.getTime();
-
-      if (difference <= 0) {
-        setTimeLeft({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-      } else {
-        setTimeLeft({
-          days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-          hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
-          seconds: Math.floor((difference / 1000) % 60),
-        });
-      }
+      setTimeLeft(calculateTimeLeft(targetTime));
     }, 1000);
 
     return () => clearInterval(timer);

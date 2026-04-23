@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/store/useAuthStore";
+import { useAuthStore } from "@/features/auth/store/useAuthStore";
 
 import { 
   MessageSquare, 
@@ -23,6 +23,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { timelineEvents } from "@/data/timeline";
 import { TimelineEvent } from "@/types/election";
 import { Progress } from "@/components/ui/progress";
+import { calculateTimeLeft } from "@/lib/date-utils";
 
 export default function DashboardPage() {
   const { user, loading, logOut } = useAuthStore();
@@ -51,17 +52,8 @@ export default function DashboardPage() {
         const eventDate = new Date(event.date);
         const endDate = event.endDate ? new Date(event.endDate) : null;
         const isOngoing = endDate && now >= eventDate && now <= endDate;
-        const targetTime = isOngoing ? endDate.getTime() : eventDate.getTime();
-        const diff = targetTime - now.getTime();
-
-        if (diff > 0) {
-          setTimeLeft({
-            days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-            hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-            minutes: Math.floor((diff / 1000 / 60) % 60),
-            seconds: Math.floor((diff / 1000) % 60),
-          });
-        }
+        const targetTime = isOngoing ? endDate : eventDate;
+        setTimeLeft(calculateTimeLeft(targetTime));
       }
     };
 

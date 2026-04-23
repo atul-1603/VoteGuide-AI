@@ -1,10 +1,10 @@
 "use client";
 
-import { useGeminiChat } from "@/hooks/useGeminiChat";
-import { useChatStore } from "@/store/useChatStore";
-import { ChatWindow } from "@/components/chat/ChatWindow";
-import { ChatInput } from "@/components/chat/ChatInput";
-import { QuickPrompts } from "@/components/chat/QuickPrompts";
+import { useGeminiChat } from "@/features/chat/hooks/useGeminiChat";
+import { useChatStore } from "@/features/chat/store/useChatStore";
+import { ChatWindow } from "@/features/chat/components/ChatWindow";
+import { ChatInput } from "@/features/chat/components/ChatInput";
+import { QuickPrompts } from "@/features/chat/components/QuickPrompts";
 import { AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 

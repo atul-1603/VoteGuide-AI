@@ -3,7 +3,7 @@ import { Playfair_Display, DM_Sans } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { AuthProvider } from "@/components/layout/AuthProvider";
+import { AuthProvider } from "@/features/auth/components/AuthProvider";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair-display" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });

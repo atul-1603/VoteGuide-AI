@@ -1,8 +1,8 @@
-import { HeroSection } from "@/components/home/HeroSection";
-import { StatsBar } from "@/components/home/StatsBar";
-import { FeaturesGrid } from "@/components/home/FeaturesGrid";
-import { HowItWorks } from "@/components/home/HowItWorks";
-import { FAQAccordion } from "@/components/home/FAQAccordion";
+import { HeroSection } from "@/features/home/components/HeroSection";
+import { StatsBar } from "@/features/home/components/StatsBar";
+import { FeaturesGrid } from "@/features/home/components/FeaturesGrid";
+import { HowItWorks } from "@/features/home/components/HowItWorks";
+import { FAQAccordion } from "@/features/home/components/FAQAccordion";
 
 export default function Home() {
   return (

@@ -8,6 +8,8 @@ import { CalendarPlus, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { getEventStatus } from "../utils/timeline-helpers";
+
 interface Props {
   event: TimelineEventType;
   onAddToCalendar: (event: TimelineEventType) => void;
@@ -18,20 +20,7 @@ export function TimelineEvent({ event, onAddToCalendar }: Props) {
   
   const now = new Date();
   const eventDate = new Date(event.date);
-  const endDate = event.endDate ? new Date(event.endDate) : null;
-  
-  // Calculate Status
-  let status: "completed" | "ongoing" | "upcoming" = "upcoming";
-  if (endDate) {
-    if (now > endDate) status = "completed";
-    else if (now >= eventDate && now <= endDate) status = "ongoing";
-  } else {
-    if (now > eventDate) {
-      // If it's the same day, we might consider it ongoing/completed depending on time
-      const isToday = eventDate.toDateString() === now.toDateString();
-      status = isToday ? "ongoing" : "completed";
-    }
-  }
+  const status = getEventStatus(event, now);
 
   const statusColors = {
     completed: "text-muted-foreground border-muted bg-white/5",
