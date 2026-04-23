@@ -37,7 +37,7 @@ const faqs = [
 
 export function FAQAccordion() {
   return (
-    <section className="py-24 bg-background">
+    <section className="py-24 bg-background relative">
       <div className="container max-w-3xl">
         <div className="text-center mb-16">
           <h2 className="font-serif text-3xl md:text-5xl font-bold mb-4 text-white">Frequently Asked Questions</h2>

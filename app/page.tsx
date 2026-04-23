@@ -6,12 +6,14 @@ import { FAQAccordion } from "@/features/home/components/FAQAccordion";
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col w-full">
       <HeroSection />
       <StatsBar />
-      <FeaturesGrid />
-      <HowItWorks />
-      <FAQAccordion />
+      <div className="flex flex-col relative z-10 w-full">
+        <FeaturesGrid />
+        <HowItWorks />
+        <FAQAccordion />
+      </div>
     </div>
   );
 }

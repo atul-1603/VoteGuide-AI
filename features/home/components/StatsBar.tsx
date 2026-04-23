@@ -13,7 +13,7 @@ export function StatsBar() {
   return (
     <section className="border-y border-white/5 bg-background/50 backdrop-blur-sm py-12">
       <div className="container">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x divide-white/5">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:divide-x divide-white/10">
           {stats.map((stat, index) => (
             <motion.div
               key={index}

@@ -78,78 +78,88 @@ export function HeroSection() {
   };
 
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden mesh-bg pt-16">
-      <div className="container relative z-10 grid lg:grid-cols-2 gap-12 items-center">
+    <section className="relative min-h-[90vh] flex items-center py-20 overflow-hidden mesh-bg">
+      <div className="container relative z-10 grid lg:grid-cols-2 gap-16 items-center">
         <motion.div
           variants={containerVariants}
           initial="hidden"
           animate="visible"
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-8"
         >
           <motion.h1
             variants={itemVariants}
-            className="font-serif text-5xl sm:text-6xl lg:text-7xl font-bold leading-tight text-white drop-shadow-sm"
+            className="font-serif text-6xl sm:text-7xl lg:text-8xl font-bold leading-[1.1] text-white drop-shadow-sm"
           >
             Know Your <span className="text-secondary">Vote.</span>
           </motion.h1>
           <motion.p
             variants={itemVariants}
-            className="text-lg sm:text-xl text-white/80 max-w-xl"
+            className="text-xl sm:text-2xl text-white/80 max-w-xl leading-relaxed"
           >
             Your intelligent guide to the democratic process. AI-powered insights, polling station finder, and a personalized voter journey.
           </motion.p>
-          <motion.div variants={itemVariants} className="flex flex-wrap gap-4 mt-4">
-            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-8 text-lg h-14">
+          <motion.div variants={itemVariants} className="flex flex-wrap gap-6 mt-4">
+            <Button asChild size="lg" className="bg-primary hover:bg-primary/90 text-white rounded-full px-10 text-xl h-16 shadow-lg shadow-primary/25">
               <Link href="/chat">
-                Chat with AI <ArrowRight className="ml-2 h-5 w-5" />
+                Chat with AI <ArrowRight className="ml-2 h-6 w-6" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="rounded-full px-8 text-lg h-14 border-white/20 hover:bg-white/10 hover:text-white text-white">
+            <Button asChild variant="outline" size="lg" className="rounded-full px-10 text-xl h-16 border-white/20 hover:bg-white/10 hover:text-white text-white backdrop-blur-sm">
               <Link href="/timeline">View Timeline</Link>
             </Button>
           </motion.div>
         </motion.div>
 
         <motion.div
-          initial={{ opacity: 0, scale: 0.9 }}
-          animate={{ opacity: 1, scale: 1 }}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="hidden lg:flex justify-end"
+          className="hidden lg:flex justify-end items-center"
         >
-          <div className="relative w-full max-w-md aspect-square">
-            {/* Glassmorphism card for countdown */}
-            <div 
-              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl shadow-primary/20 flex flex-col items-center justify-center gap-6"
-              role="timer"
-              aria-live="polite"
-              aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${targetEvent?.title || 'next event'}`}
-            >
-              <CalendarDays className="h-16 w-16 text-secondary opacity-80" aria-hidden="true" />
-              <div className="text-center w-full">
-                <h3 className="font-serif text-xl font-semibold text-white mb-6 h-12 flex items-center justify-center">
-                  {getLabel()}
-                </h3>
-                {!isFinished && (
-                  <div className="grid grid-cols-4 gap-4">
-                    <div className="flex flex-col items-center">
-                      <span className="text-4xl font-bold text-white w-16 tabular-nums">{timeLeft.days}</span>
-                      <span className="text-xs text-white/60 uppercase tracking-wider">Days</span>
+          <div 
+            className="w-full max-w-md p-10 rounded-[2rem] bg-white/5 border border-white/10 backdrop-blur-xl shadow-2xl shadow-primary/20 flex flex-col items-center gap-8 relative overflow-hidden group"
+            role="timer"
+            aria-live="polite"
+            aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${targetEvent?.title || 'next event'}`}
+          >
+            {/* Decorative background glow */}
+            <div className="absolute -top-24 -right-24 w-48 h-48 bg-primary/20 rounded-full blur-[80px] group-hover:bg-primary/30 transition-colors" />
+            
+            <CalendarDays className="h-20 w-20 text-secondary drop-shadow-[0_0_15px_rgba(240,180,41,0.3)]" aria-hidden="true" />
+            
+            <div className="text-center w-full relative z-10">
+              <h3 className="font-serif text-2xl font-bold text-white mb-8 min-h-[4rem] flex items-center justify-center px-4 leading-snug">
+                {getLabel()}
+              </h3>
+              
+              {!isFinished && (
+                <div className="grid grid-cols-4 gap-4 sm:gap-6">
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="bg-white/5 w-full py-4 rounded-2xl border border-white/5">
+                      <span className="text-4xl font-bold text-white tabular-nums">{timeLeft.days}</span>
                     </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-4xl font-bold text-white w-12 tabular-nums">{timeLeft.hours.toString().padStart(2, '0')}</span>
-                      <span className="text-xs text-white/60 uppercase tracking-wider">Hrs</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-4xl font-bold text-white w-12 tabular-nums">{timeLeft.minutes.toString().padStart(2, '0')}</span>
-                      <span className="text-xs text-white/60 uppercase tracking-wider">Min</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <span className="text-4xl font-bold text-white w-12 tabular-nums">{timeLeft.seconds.toString().padStart(2, '0')}</span>
-                      <span className="text-xs text-white/60 uppercase tracking-wider">Sec</span>
-                    </div>
+                    <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold">Days</span>
                   </div>
-                )}
-              </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="bg-white/5 w-full py-4 rounded-2xl border border-white/5">
+                      <span className="text-4xl font-bold text-white tabular-nums">{timeLeft.hours.toString().padStart(2, '0')}</span>
+                    </div>
+                    <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold">Hrs</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="bg-white/5 w-full py-4 rounded-2xl border border-white/5">
+                      <span className="text-4xl font-bold text-white tabular-nums">{timeLeft.minutes.toString().padStart(2, '0')}</span>
+                    </div>
+                    <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold">Min</span>
+                  </div>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="bg-white/5 w-full py-4 rounded-2xl border border-white/5">
+                      <span className="text-4xl font-bold text-white tabular-nums">{timeLeft.seconds.toString().padStart(2, '0')}</span>
+                    </div>
+                    <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold">Sec</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </motion.div>
