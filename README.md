@@ -16,6 +16,15 @@ Democracy thrives when citizens are informed. VoteGuide removes the friction fro
 
 ---
 
+## 🌍 Why this matters
+The complexity of the election process is often a barrier to democratic participation. VoteGuide directly addresses this by:
+*   **Bridging the Information Gap**: Transforming dense, bureaucratic procedures into interactive, conversational answers that anyone can understand.
+*   **Reducing Friction**: Providing instant tools for booth location and calendar synchronization, saving users hours of manual research and planning.
+*   **Empowering First-Time Voters**: Offering a structured, interactive "Voter Journey" to guide new citizens through every critical milestone of their first election.
+*   **Ensuring Accuracy & Trust**: Combatting election misinformation by strictly providing verified information and direct links to official ECI resources.
+
+---
+
 ## 🚀 Featured Capabilities
 
 ### 🤖 1. AI Election Expert (Gemini 2.5 Flash)

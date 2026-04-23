@@ -62,17 +62,30 @@ export function TimelineEvent({ event, onAddToCalendar }: Props) {
         status === "completed" ? "opacity-60 grayscale-[0.5]" : 
         status === "ongoing" ? "ring-2 ring-green-400/30 bg-card/80 scale-[1.02] shadow-2xl shadow-green-400/10" : "hover:bg-card/70"
       }`}>
-        <CardHeader className="pb-3 cursor-pointer" onClick={() => setExpanded(!expanded)}>
+        <CardHeader 
+          className="pb-3 cursor-pointer outline-none focus-visible:ring-2 focus-visible:ring-primary" 
+          onClick={() => setExpanded(!expanded)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setExpanded(!expanded);
+            }
+          }}
+          tabIndex={0}
+          role="button"
+          aria-expanded={expanded}
+          aria-controls={`event-details-${event.id}`}
+        >
           <div className="flex justify-between items-start mb-2">
             <div className="flex gap-2 items-center">
               <Badge variant="outline" className={statusColors[status]}>
-                {status.toUpperCase()}
+                <span className="sr-only">Status: </span>{status.toUpperCase()}
               </Badge>
               <Badge variant="outline" className="text-white/40 border-white/5 bg-white/5">
-                {event.phase}
+                <span className="sr-only">Phase: </span>{event.phase}
               </Badge>
             </div>
-            <span className="text-sm font-medium text-muted-foreground">
+            <span className="text-sm font-medium text-muted-foreground" aria-label={`Date: ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`}>
               {eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
               {event.endDate && ` - ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`}
               , 2026
@@ -83,7 +96,7 @@ export function TimelineEvent({ event, onAddToCalendar }: Props) {
             <div>
               <h3 className="text-xl font-bold text-white mb-1">{event.title}</h3>
               {event.states && (
-                <div className="flex flex-wrap gap-1 mt-1">
+                <div className="flex flex-wrap gap-1 mt-1" aria-label="Target states">
                   {event.states.map(state => (
                     <span key={state} className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded bg-primary/20 text-primary-foreground font-bold">
                       {state}
@@ -92,14 +105,15 @@ export function TimelineEvent({ event, onAddToCalendar }: Props) {
                 </div>
               )}
             </div>
-            <Button variant="ghost" size="icon" className="shrink-0 text-muted-foreground hover:text-white">
+            <div className="shrink-0 text-muted-foreground hover:text-white" aria-hidden="true">
               {expanded ? <ChevronUp className="h-5 w-5" /> : <ChevronDown className="h-5 w-5" />}
-            </Button>
+            </div>
           </div>
         </CardHeader>
         <AnimatePresence>
           {expanded && (
             <motion.div
+              id={`event-details-${event.id}`}
               initial={{ height: 0, opacity: 0 }}
               animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}

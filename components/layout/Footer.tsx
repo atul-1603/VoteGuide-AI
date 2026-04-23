@@ -6,8 +6,8 @@ export function Footer() {
     <footer className="w-full border-t border-white/10 bg-background/80 py-12">
       <div className="container grid gap-8 md:grid-cols-4">
         <div className="flex flex-col gap-4 md:col-span-2">
-          <Link href="/" className="flex items-center gap-2 text-primary font-serif text-2xl font-bold">
-            <Vote className="h-6 w-6" />
+          <Link href="/" className="flex items-center gap-2 text-primary font-serif text-2xl font-bold" aria-label="VoteGuide Home">
+            <Vote className="h-6 w-6" aria-hidden="true" />
             <span>VoteGuide</span>
           </Link>
           <p className="text-sm text-muted-foreground max-w-sm">

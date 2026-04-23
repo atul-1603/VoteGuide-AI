@@ -29,12 +29,13 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="relative bg-card/50 backdrop-blur-md border border-white/10 p-2 rounded-2xl flex items-end gap-2 shadow-xl">
+    <form onSubmit={handleSubmit} className="relative bg-card/50 backdrop-blur-md border border-white/10 p-2 rounded-2xl flex items-end gap-2 shadow-xl" aria-label="Message composition">
       <Textarea
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Ask anything about voting..."
+        aria-label="Your message"
         className="min-h-[44px] max-h-32 resize-none border-0 bg-transparent focus-visible:ring-0 px-4 py-3 text-white placeholder:text-muted-foreground"
         rows={1}
       />
@@ -45,16 +46,18 @@ export function ChatInput({ onSend, isLoading }: ChatInputProps) {
           size="icon"
           className="text-muted-foreground hover:text-white hover:bg-white/10 rounded-full"
           title="Voice input (coming soon)"
+          aria-label="Voice input (coming soon)"
         >
-          <Mic className="h-5 w-5" />
+          <Mic className="h-5 w-5" aria-hidden="true" />
         </Button>
         <Button
           type="submit"
           size="icon"
           disabled={!input.trim() || isLoading}
           className="bg-primary hover:bg-primary/90 text-white rounded-full transition-all"
+          aria-label="Send message"
         >
-          <Send className="h-4 w-4 ml-1" />
+          <Send className="h-4 w-4 ml-1" aria-hidden="true" />
         </Button>
       </div>
     </form>

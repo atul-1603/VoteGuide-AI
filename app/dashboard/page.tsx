@@ -115,7 +115,12 @@ export default function DashboardPage() {
           {/* Main Column */}
           <div className="lg:col-span-2 space-y-8">
             {/* Live Countdown Card */}
-            <Card className="bg-gradient-to-br from-primary/20 to-secondary/10 border-white/10 overflow-hidden">
+            <Card 
+              className="bg-gradient-to-br from-primary/20 to-secondary/10 border-white/10 overflow-hidden"
+              role="region"
+              aria-live="polite"
+              aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${nextEvent?.endDate && new Date() >= new Date(nextEvent.date) ? nextEvent.title + ' end' : nextEvent?.title}`}
+            >
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                   <div className="space-y-2 text-center md:text-left">
@@ -152,28 +157,52 @@ export default function DashboardPage() {
 
             {/* Quick Actions Grid */}
             <div className="grid md:grid-cols-2 gap-4">
-              <Card className="bg-card/40 border-white/5 hover:bg-card/60 transition-all group cursor-pointer" onClick={() => router.push("/find-station")}>
+              <Card 
+                className="bg-card/40 border-white/5 hover:bg-card/60 transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-primary outline-none" 
+                onClick={() => router.push("/find-station")}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    router.push("/find-station");
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label="Find My Booth"
+              >
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 group-hover:scale-110 transition-transform" aria-hidden="true">
                     <MapPin className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-white">Find My Booth</h3>
                     <p className="text-xs text-muted-foreground">Locate your polling station on the map.</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                 </CardContent>
               </Card>
-              <Card className="bg-card/40 border-white/5 hover:bg-card/60 transition-all group cursor-pointer" onClick={() => router.push("/journey")}>
+              <Card 
+                className="bg-card/40 border-white/5 hover:bg-card/60 transition-all group cursor-pointer focus-visible:ring-2 focus-visible:ring-primary outline-none" 
+                onClick={() => router.push("/journey")}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    router.push("/journey");
+                  }
+                }}
+                tabIndex={0}
+                role="button"
+                aria-label="Voter Journey"
+              >
                 <CardContent className="p-6 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform">
+                  <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 group-hover:scale-110 transition-transform" aria-hidden="true">
                     <Calendar className="w-6 h-6" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-bold text-white">Voter Journey</h3>
                     <p className="text-xs text-muted-foreground">Check your registration progress.</p>
                   </div>
-                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" />
+                  <ChevronRight className="w-5 h-5 text-muted-foreground group-hover:translate-x-1 transition-transform" aria-hidden="true" />
                 </CardContent>
               </Card>
             </div>
@@ -197,7 +226,11 @@ export default function DashboardPage() {
                   <CardTitle className="text-2xl text-white">{Math.round(progressPercent)}%</CardTitle>
                 </CardHeader>
                 <CardContent className="pt-2">
-                  <Progress value={progressPercent} className="h-1.5 bg-white/5" />
+                  <Progress 
+                    value={progressPercent} 
+                    className="h-1.5 bg-white/5" 
+                    aria-label={`Election progress: ${Math.round(progressPercent)}% completed`}
+                  />
                 </CardContent>
               </Card>
               <Card className="bg-card/40 border-white/5">

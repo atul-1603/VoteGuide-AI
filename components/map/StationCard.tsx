@@ -42,20 +42,20 @@ export function StationCard({ stationId, onGetDirections }: Props) {
           <span className="bg-primary/20 text-primary text-xs font-bold px-2 py-1 rounded">Booth {station.booth}</span>
         </div>
         <p className="text-sm text-muted-foreground flex items-center gap-1">
-          <MapPin className="w-3 h-3" /> {station.address}
+          <MapPin className="w-3 h-3" aria-hidden="true" /> {station.address}
         </p>
       </CardHeader>
       <CardContent className="flex-1 pt-6 flex flex-col gap-4">
         <div className="grid grid-cols-2 gap-4">
           <div className="flex items-start gap-2 bg-white/5 p-3 rounded-lg border border-white/5">
-            <Clock className="w-4 h-4 text-secondary mt-0.5" />
+            <Clock className="w-4 h-4 text-secondary mt-0.5" aria-hidden="true" />
             <div>
               <p className="text-xs text-muted-foreground">Polling Hours</p>
               <p className="text-sm font-medium text-white">07:00 AM - 06:00 PM</p>
             </div>
           </div>
           <div className="flex items-start gap-2 bg-white/5 p-3 rounded-lg border border-white/5">
-            <ShieldAlert className="w-4 h-4 text-primary mt-0.5" />
+            <ShieldAlert className="w-4 h-4 text-primary mt-0.5" aria-hidden="true" />
             <div>
               <p className="text-xs text-muted-foreground">Accessibility</p>
               <p className="text-sm font-medium text-white">{station.accessible ? "Wheelchair Accessible" : "Limited Access"}</p>
@@ -65,7 +65,7 @@ export function StationCard({ stationId, onGetDirections }: Props) {
 
         <div className="mt-2 bg-primary/10 border border-primary/20 p-4 rounded-lg">
           <h4 className="text-sm font-medium text-white mb-2 flex items-center gap-2">
-            <Phone className="w-4 h-4 text-primary" /> Voter Helpline
+            <Phone className="w-4 h-4 text-primary" aria-hidden="true" /> Voter Helpline
           </h4>
           <p className="text-xs text-muted-foreground">Call 1950 for any election-related queries or complaints.</p>
         </div>
@@ -74,8 +74,9 @@ export function StationCard({ stationId, onGetDirections }: Props) {
           <Button 
             className="w-full bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20"
             onClick={onGetDirections}
+            aria-label={`Get directions to ${station.name}`}
           >
-            <Navigation className="w-4 h-4 mr-2" />
+            <Navigation className="w-4 h-4 mr-2" aria-hidden="true" />
             Get Directions ({station.distance})
           </Button>
         </div>

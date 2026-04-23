@@ -37,6 +37,7 @@ export function LocationSearch({ onPlaceSelect, isLoaded }: Props) {
         ref={inputRef}
         type="text"
         placeholder="Enter your address or locality..."
+        aria-label="Search for address or polling station"
         className="pl-9 bg-card/50 border-white/10 text-white placeholder:text-muted-foreground focus-visible:ring-primary"
         disabled={!isLoaded}
       />

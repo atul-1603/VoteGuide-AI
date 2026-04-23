@@ -32,8 +32,8 @@ export function Navbar() {
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/60 backdrop-blur-md notranslate">
       <div className="container flex h-16 items-center justify-between">
-        <Link href="/" className="flex items-center gap-2 text-primary font-serif text-2xl font-bold">
-          <Vote className="h-6 w-6" />
+        <Link href="/" className="flex items-center gap-2 text-primary font-serif text-2xl font-bold" aria-label="VoteGuide Home">
+          <Vote className="h-6 w-6" aria-hidden="true" />
           <span>VoteGuide</span>
         </Link>
         <div className="hidden md:flex items-center gap-6 text-sm font-medium">
@@ -45,6 +45,7 @@ export function Navbar() {
                 key={link.href} 
                 href={link.href} 
                 className={`${isActive ? "text-primary" : "text-muted-foreground hover:text-foreground"} transition-colors`}
+                aria-current={isActive ? "page" : undefined}
               >
                 {link.label}
               </Link>
@@ -54,8 +55,8 @@ export function Navbar() {
         <div className="flex items-center gap-4">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
-                <Globe className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="hidden sm:inline-flex" aria-label="Select Language">
+                <Globe className="h-4 w-4" aria-hidden="true" />
                 <span className="sr-only">Language</span>
               </Button>
             </DropdownMenuTrigger>
@@ -81,10 +82,10 @@ export function Navbar() {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+                <Button variant="ghost" className="relative h-8 w-8 rounded-full" aria-label="User account menu">
                   <Avatar className="h-8 w-8 border border-white/10">
                     <AvatarImage src={user.photoURL || ""} alt={user.displayName || "User"} />
-                    <AvatarFallback>{user.displayName?.charAt(0) || "U"}</AvatarFallback>
+                    <AvatarFallback aria-hidden="true">{user.displayName?.charAt(0) || "U"}</AvatarFallback>
                   </Avatar>
                 </Button>
               </DropdownMenuTrigger>

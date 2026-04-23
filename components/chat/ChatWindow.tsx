@@ -27,11 +27,17 @@ export function ChatWindow() {
       </div>
 
       <ScrollArea className="flex-1 p-6" ref={scrollRef}>
-        <div className="flex flex-col gap-6 max-w-3xl mx-auto pb-4">
+        <div 
+          className="flex flex-col gap-6 max-w-3xl mx-auto pb-4"
+          role="log"
+          aria-live="polite"
+          aria-atomic="false"
+          aria-label="Chat messages"
+        >
           {messages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}
-          {isLoading && <TypingIndicator />}
+          {isLoading && <TypingIndicator aria-label="Assistant is typing..." />}
         </div>
       </ScrollArea>
     </div>

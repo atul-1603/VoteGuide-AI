@@ -129,8 +129,13 @@ export function HeroSection() {
         >
           <div className="relative w-full max-w-md aspect-square">
             {/* Glassmorphism card for countdown */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl shadow-primary/20 flex flex-col items-center justify-center gap-6">
-              <CalendarDays className="h-16 w-16 text-secondary opacity-80" />
+            <div 
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full p-8 rounded-3xl bg-white/5 border border-white/10 backdrop-blur-md shadow-2xl shadow-primary/20 flex flex-col items-center justify-center gap-6"
+              role="timer"
+              aria-live="polite"
+              aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${targetEvent?.title || 'next event'}`}
+            >
+              <CalendarDays className="h-16 w-16 text-secondary opacity-80" aria-hidden="true" />
               <div className="text-center w-full">
                 <h3 className="font-serif text-xl font-semibold text-white mb-6 h-12 flex items-center justify-center">
                   {getLabel()}
