@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { timelineEvents } from "@/data/timeline";
 import { TimelineEvent } from "@/features/timeline/components/TimelineEvent";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
@@ -13,6 +13,11 @@ export default function TimelinePage() {
   const [filter, setFilter] = useState("All");
   const { requestToken, accessToken } = useCalendarAuth();
   const [pendingEvent, setPendingEvent] = useState<TimelineEventType | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const filteredEvents = filter === "All" 
     ? timelineEvents 
@@ -92,7 +97,7 @@ export default function TimelinePage() {
 
           <div className="space-y-12">
             {filteredEvents.map((event, index) => {
-              const isNextUpcoming = event.id === filteredEvents.find(e => new Date(e.date) > new Date())?.id;
+              const isNextUpcoming = mounted && event.id === filteredEvents.find(e => new Date(e.date) > new Date())?.id;
               return (
                 <div key={event.id} className={`flex flex-col md:flex-row gap-8 ${index % 2 === 0 ? "md:flex-row-reverse" : ""}`}>
                   {/* Empty space for alternating layout */}

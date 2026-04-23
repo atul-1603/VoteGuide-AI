@@ -11,7 +11,7 @@ const stats = [
 
 export function StatsBar() {
   return (
-    <section className="border-y border-white/5 bg-background/50 backdrop-blur-sm py-12">
+    <section className="border-y border-white/5 bg-background/50 backdrop-blur-sm py-12 relative z-10">
       <div className="container">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:divide-x divide-white/10">
           {stats.map((stat, index) => (

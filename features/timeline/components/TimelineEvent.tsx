@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -17,8 +17,13 @@ interface Props {
 
 export function TimelineEvent({ event, onAddToCalendar }: Props) {
   const [expanded, setExpanded] = useState(false);
+  const [mounted, setMounted] = useState(false);
   
-  const now = new Date();
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const now = mounted ? new Date() : new Date("2026-01-01"); // Use a fixed past date for SSR
   const eventDate = new Date(event.date);
   const status = getEventStatus(event, now);
 
@@ -75,8 +80,8 @@ export function TimelineEvent({ event, onAddToCalendar }: Props) {
               </Badge>
             </div>
             <span className="text-sm font-medium text-muted-foreground" aria-label={`Date: ${eventDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}`}>
-              {eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-              {event.endDate && ` - ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`}
+              {mounted ? eventDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : "..."}
+              {event.endDate && mounted && ` - ${new Date(event.endDate).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`}
               , 2026
             </span>
           </div>

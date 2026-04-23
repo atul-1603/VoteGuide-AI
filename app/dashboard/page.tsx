@@ -30,6 +30,11 @@ export default function DashboardPage() {
   const router = useRouter();
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [nextEvent, setNextEvent] = useState<TimelineEvent | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -127,21 +132,30 @@ export default function DashboardPage() {
                     </p>
                   </div>
                   <div className="grid grid-cols-4 gap-4">
-                    {[
-                      { label: "Days", value: timeLeft.days },
-                      { label: "Hrs", value: timeLeft.hours },
-                      { label: "Min", value: timeLeft.minutes },
-                      { label: "Sec", value: timeLeft.seconds },
-                    ].map((unit) => (
-                      <div key={unit.label} className="flex flex-col items-center bg-background/40 backdrop-blur-md p-3 rounded-xl border border-white/5 min-w-[70px]">
-                        <span className="text-2xl font-bold text-white tabular-nums">
-                          {unit.value.toString().padStart(2, "0")}
-                        </span>
-                        <span className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">
-                          {unit.label}
-                        </span>
-                      </div>
-                    ))}
+                    {mounted ? (
+                      [
+                        { label: "Days", value: timeLeft.days },
+                        { label: "Hrs", value: timeLeft.hours },
+                        { label: "Min", value: timeLeft.minutes },
+                        { label: "Sec", value: timeLeft.seconds },
+                      ].map((unit) => (
+                        <div key={unit.label} className="flex flex-col items-center bg-background/40 backdrop-blur-md p-3 rounded-xl border border-white/5 min-w-[70px]">
+                          <span className="text-2xl font-bold text-white tabular-nums">
+                            {unit.value.toString().padStart(2, "0")}
+                          </span>
+                          <span className="text-[10px] uppercase text-muted-foreground font-bold tracking-wider">
+                            {unit.label}
+                          </span>
+                        </div>
+                      ))
+                    ) : (
+                      [1, 2, 3, 4].map((i) => (
+                        <div key={i} className="flex flex-col items-center bg-background/40 backdrop-blur-md p-3 rounded-xl border border-white/5 min-w-[70px] animate-pulse">
+                          <div className="h-8 w-8 bg-white/10 rounded mb-2" />
+                          <div className="h-2 w-4 bg-white/10 rounded" />
+                        </div>
+                      ))
+                    )}
                   </div>
                 </div>
               </CardContent>
@@ -250,7 +264,7 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent className="p-0">
                 <div className="divide-y divide-white/5">
-                  {timelineEvents.slice(completedCount > 0 ? completedCount - 1 : 0, (completedCount > 0 ? completedCount - 1 : 0) + 3).map((event) => {
+                  {mounted && timelineEvents.slice(completedCount > 0 ? completedCount - 1 : 0, (completedCount > 0 ? completedCount - 1 : 0) + 3).map((event) => {
                     const isPast = new Date(event.date) < new Date();
                     const isOngoing = event.endDate && new Date() >= new Date(event.date) && new Date() <= new Date(event.endDate);
                     return (
@@ -266,6 +280,19 @@ export default function DashboardPage() {
                       </div>
                     );
                   })}
+                  {!mounted && (
+                    <div className="p-4 space-y-4">
+                      {[1, 2, 3].map(i => (
+                        <div key={i} className="flex items-center gap-3 animate-pulse">
+                          <div className="w-2 h-2 rounded-full bg-white/10" />
+                          <div className="space-y-2">
+                            <div className="h-3 w-32 bg-white/10 rounded" />
+                            <div className="h-2 w-20 bg-white/10 rounded" />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                 </div>
                 <div className="p-4 bg-white/5">
                   <Button variant="ghost" size="sm" className="w-full text-xs text-muted-foreground hover:text-white" onClick={() => router.push("/timeline")}>

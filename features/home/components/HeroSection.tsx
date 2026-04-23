@@ -13,8 +13,10 @@ export function HeroSection() {
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [targetEvent, setTargetEvent] = useState<TimelineEvent | null>(null);
   const [isFinished, setIsFinished] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const timer = setInterval(() => {
       const now = new Date();
       
@@ -132,7 +134,7 @@ export function HeroSection() {
                 {getLabel()}
               </h3>
               
-              {!isFinished && (
+              {mounted && !isFinished && (
                 <div className="grid grid-cols-4 gap-4 sm:gap-6">
                   <div className="flex flex-col items-center gap-2">
                     <div className="bg-white/5 w-full py-4 rounded-2xl border border-white/5">
@@ -158,6 +160,23 @@ export function HeroSection() {
                     </div>
                     <span className="text-[10px] text-white/50 uppercase tracking-[0.2em] font-bold">Sec</span>
                   </div>
+                </div>
+              )}
+
+              {mounted && isFinished && (
+                <div className="py-8 bg-white/5 rounded-2xl border border-white/5 w-full">
+                  <span className="text-xl font-bold text-white">Election Cycle Complete</span>
+                </div>
+              )}
+
+              {!mounted && (
+                <div className="grid grid-cols-4 gap-4 sm:gap-6 animate-pulse opacity-50">
+                   {[1, 2, 3, 4].map((i) => (
+                    <div key={i} className="flex flex-col items-center gap-2">
+                      <div className="bg-white/10 w-full py-8 rounded-2xl border border-white/5" />
+                      <div className="h-2 w-8 bg-white/10 rounded" />
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
