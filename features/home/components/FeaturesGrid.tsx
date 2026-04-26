@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { MessageSquare, Calendar, Route, MapPin, Bell, Globe2 } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui";
 
 const features = [
   {

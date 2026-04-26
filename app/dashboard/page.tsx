@@ -2,8 +2,8 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
-import { useCountdown } from "@/features/shared/hooks/useCountdown";
+import { useAuthStore } from "@/features/auth";
+import { useCountdown } from "@/lib/hooks/useCountdown";
 
 import { 
   MessageSquare, 
@@ -17,13 +17,13 @@ import {
   LogOut,
   Globe
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { timelineEvents } from "@/data/timeline";
-import { Progress } from "@/components/ui/progress";
-import { changeLanguage } from "@/components/layout/GoogleTranslate";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui";
+import { Button } from "@/components/ui";
+import { Badge } from "@/components/ui";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
+import { timelineEvents } from "@/config/constants/timeline";
+import { Progress } from "@/components/ui";
+import { changeLanguage } from "@/components/layout";
 
 export default function DashboardPage() {
   const { user, loading, logOut } = useAuthStore();
@@ -38,8 +38,8 @@ export default function DashboardPage() {
 
   if (loading || !user) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-background">
-        <div className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+      <div className="flex-1 flex items-center justify-center bg-background" role="status" aria-label="Loading dashboard">
+        <div className="w-8 h-8 rounded-full border-4 border-primary border-t-transparent animate-spin" aria-hidden="true" />
       </div>
     );
   }
@@ -59,7 +59,7 @@ export default function DashboardPage() {
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 border-2 border-primary/20 p-0.5">
-              <AvatarImage src={user.photoURL || ""} />
+              <AvatarImage src={user.photoURL || ""} alt={user.displayName || "User avatar"} />
               <AvatarFallback className="bg-primary/10 text-primary font-bold text-xl">
                 {user.displayName?.charAt(0) || user.email?.charAt(0)}
               </AvatarFallback>

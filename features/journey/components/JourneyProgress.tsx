@@ -16,7 +16,7 @@ export function JourneyProgress({ total, completed }: Props) {
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-card/40 backdrop-blur-md rounded-3xl border border-white/10 shadow-2xl mb-12">
       <div className="relative flex items-center justify-center">
-        <svg className="w-40 h-40 transform -rotate-90">
+        <svg className="w-40 h-40 transform -rotate-90" role="img" aria-label={`Progress: ${percentage}% complete`}>
           <circle
             cx="80"
             cy="80"

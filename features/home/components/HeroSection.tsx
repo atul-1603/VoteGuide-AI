@@ -2,9 +2,9 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { ArrowRight, CalendarDays } from "lucide-react";
-import { useCountdown } from "@/features/shared/hooks/useCountdown";
+import { useCountdown } from "@/lib/hooks/useCountdown";
 
 export function HeroSection() {
   const { timeLeft, targetEvent, isFinished, isOngoing, mounted } = useCountdown();

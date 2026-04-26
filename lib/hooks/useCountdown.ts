@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { timelineEvents } from "@/data/timeline";
+import { timelineEvents } from "@/config/constants/timeline";
 import { TimelineEvent } from "@/types/election";
-import { calculateTimeLeft, type TimeLeft } from "@/lib/date-utils";
+import { calculateTimeLeft, type TimeLeft } from "@/lib/utils/date-utils";
 
 interface UseCountdownReturn {
   timeLeft: TimeLeft;

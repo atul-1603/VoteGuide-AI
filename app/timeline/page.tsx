@@ -1,11 +1,11 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { timelineEvents } from "@/data/timeline";
-import { TimelineEvent } from "@/features/timeline/components/TimelineEvent";
+import { timelineEvents } from "@/config/constants/timeline";
+import { TimelineEvent } from "@/features/timeline";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
-import { useCalendarAuth } from "@/features/timeline/hooks/useCalendarAuth";
-import { Button } from "@/components/ui/button";
+import { useCalendarAuth } from "@/features/timeline";
+import { Button } from "@/components/ui";
 
 const PHASES = ["All", "Registration", "Campaigning", "Polling", "Results"] as const;
 
@@ -81,7 +81,11 @@ export default function TimelinePage() {
         </div>
 
         {/* Phase Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-16 sticky top-20 z-20 bg-background/80 backdrop-blur-md py-4 rounded-full border border-white/5">
+        <div 
+          className="flex flex-wrap justify-center gap-2 mb-16 sticky top-20 z-20 bg-background/80 backdrop-blur-md py-4 rounded-full border border-white/5"
+          role="group"
+          aria-label="Filter timeline by phase"
+        >
           {PHASES.map((phase) => (
             <Button
               key={phase}

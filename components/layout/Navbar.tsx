@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Vote, Globe, LogOut } from "lucide-react";
-import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useAuthStore } from "@/features/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,9 +11,9 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { changeLanguage } from "@/components/layout/GoogleTranslate";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+} from "@/components/ui";
+import { changeLanguage } from "@/components/layout";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui";
 
 import { usePathname } from "next/navigation";
 
@@ -30,7 +30,7 @@ export function Navbar() {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/60 backdrop-blur-md notranslate">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/60 backdrop-blur-md notranslate" aria-label="Main navigation">
       <div className="container flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2 text-primary font-serif text-2xl font-bold" aria-label="VoteGuide Home">
           <Vote className="h-6 w-6" aria-hidden="true" />

@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { useGoogleMaps } from "@/features/map/hooks/useGoogleMaps";
-import { LocationSearch } from "@/features/map/components/LocationSearch";
-import { StationMap } from "@/features/map/components/StationMap";
-import { StationCard } from "@/features/map/components/StationCard";
+import { useGoogleMaps } from "@/features/map";
+import { LocationSearch } from "@/features/map";
+import { StationMap } from "@/features/map";
+import { StationCard } from "@/features/map";
 
 const DEFAULT_CENTER = { lat: 28.6139, lng: 77.2090 }; // New Delhi
 

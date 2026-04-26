@@ -107,12 +107,14 @@ Visit `http://localhost:3000` to experience the future of election assistance.
 
 ---
 
-## 📂 Project Structure
+## 📂 Project Structure (Enterprise Architecture)
 *   `app/` - Next.js App Router (Routes & Server Components)
-*   `components/` - Atomic Design (UI, Layout, and Feature components)
-*   `data/` - Single source of truth for the 2026 Timeline & Journey steps
-*   `hooks/` - Custom logic for Maps, Calendar, and Auth integration
-*   `store/` - Optimized Zustand stores for global state (Auth, Chat, Journey)
+*   `config/` - Centralized app configuration and environment variables
+*   `services/` - External API integrations (Firebase, Gemini AI, etc.)
+*   `lib/` - Shared utilities, global hooks, and helpers
+*   `components/` - Shared UI (Shadcn) and layout components
+*   `features/` - Domain-driven modules (Auth, Chat, Maps, Timeline, etc.)
+    * Each feature encapsulates its own components, hooks, services, and state (Zustand), cleanly exported via a barrel file.
 *   `types/` - Centralized TypeScript interface definitions
 
 ---

@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useChatStore } from "@/features/chat/store/useChatStore";
+import { useChatStore } from "@/features/chat";
 import { MessageBubble } from "./MessageBubble";
 import { TypingIndicator } from "./TypingIndicator";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea } from "@/components/ui";
 
 export function ChatWindow() {
   const { messages, isLoading } = useChatStore();

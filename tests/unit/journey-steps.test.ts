@@ -1,4 +1,4 @@
-import { journeySteps } from "@/data/journey-steps";
+import { journeySteps } from "@/config/constants/journey-steps";
 
 describe("Journey Steps Data", () => {
   it("should have exactly 6 steps", () => {

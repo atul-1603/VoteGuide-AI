@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { env } from "@/env";
+import { env } from "@/config";
 
 /**
  * Hook for managing Google Calendar OAuth2 token acquisition.

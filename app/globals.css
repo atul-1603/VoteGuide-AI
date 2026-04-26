@@ -40,6 +40,23 @@
   }
 }
 
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 24px;
+  background: hsl(var(--primary));
+  color: white;
+  border-radius: 0 0 8px 8px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: top 0.2s ease;
+}
+.skip-link:focus {
+  top: 0;
+}
+
 .mesh-bg {
   background-color: #0a1628;
   background-image: radial-gradient(at 0% 0%, hsla(221, 79%, 48%, 0.15) 0px, transparent 50%),

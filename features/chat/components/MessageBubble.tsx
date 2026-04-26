@@ -13,7 +13,7 @@ export function MessageBubble({ message }: { message: Message }) {
           isModel ? "bg-primary/20 text-primary" : "bg-secondary/20 text-secondary"
         }`}
       >
-        {isModel ? <Vote className="w-5 h-5" /> : <User className="w-5 h-5" />}
+        {isModel ? <Vote className="w-5 h-5" aria-hidden="true" /> : <User className="w-5 h-5" aria-hidden="true" />}
       </div>
       <div
         className={`px-4 py-3 rounded-2xl max-w-[85%] ${

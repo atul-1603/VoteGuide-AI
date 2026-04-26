@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { User, GoogleAuthProvider, signInWithPopup, signOut } from "firebase/auth";
-import { auth } from "@/lib/firebase";
+import { auth } from "@/services/firebase";
 
 interface AuthState {
   user: User | null;

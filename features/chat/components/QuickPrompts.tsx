@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 
 const prompts = [
   "How do I register to vote?",
@@ -9,7 +9,7 @@ const prompts = [
 
 export function QuickPrompts({ onSelect }: { onSelect: (prompt: string) => void }) {
   return (
-    <div className="flex flex-wrap gap-2 mt-4">
+    <div className="flex flex-wrap gap-2 mt-4" role="region" aria-label="Quick prompts">
       {prompts.map((prompt, index) => (
         <Button
           key={index}

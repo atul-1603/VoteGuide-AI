@@ -1,12 +1,12 @@
 "use client";
 
-import { useGeminiChat } from "@/features/chat/hooks/useGeminiChat";
-import { useChatStore } from "@/features/chat/store/useChatStore";
-import { ChatWindow } from "@/features/chat/components/ChatWindow";
-import { ChatInput } from "@/features/chat/components/ChatInput";
-import { QuickPrompts } from "@/features/chat/components/QuickPrompts";
+import { useGeminiChat } from "@/features/chat";
+import { useChatStore } from "@/features/chat";
+import { ChatWindow } from "@/features/chat";
+import { ChatInput } from "@/features/chat";
+import { QuickPrompts } from "@/features/chat";
 import { AlertCircle, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 
 export default function ChatPage() {
   const { sendMessage, error } = useGeminiChat();
@@ -15,15 +15,20 @@ export default function ChatPage() {
   return (
     <div className="flex-1 flex flex-col md:flex-row gap-6 p-4 md:p-8 mesh-bg h-[calc(100vh-4rem)]">
       {/* Sidebar for topics - hidden on small screens */}
-      <div className="hidden lg:flex w-64 flex-col gap-6">
+      <aside className="hidden lg:flex w-64 flex-col gap-6" aria-label="Chat categories">
         <div>
           <h3 className="font-serif text-xl font-bold text-white mb-4">Categories</h3>
-          <ul className="space-y-2 text-sm text-muted-foreground">
-            <li className="hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5">Registration</li>
-            <li className="hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5">ID & Documents</li>
-            <li className="hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5">Polling Day</li>
-            <li className="hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5">EVM & Process</li>
-            <li className="hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5">Rights & Laws</li>
+          <ul className="space-y-2 text-sm text-muted-foreground" role="list">
+            {["Registration", "ID & Documents", "Polling Day", "EVM & Process", "Rights & Laws"].map((cat) => (
+              <li key={cat}>
+                <button
+                  className="w-full text-left hover:text-primary cursor-pointer transition-colors px-3 py-2 bg-white/5 rounded-lg border border-white/5 focus-visible:ring-2 focus-visible:ring-primary"
+                  onClick={() => sendMessage(`Tell me about ${cat}`)}
+                >
+                  {cat}
+                </button>
+              </li>
+            ))}
           </ul>
         </div>
         
@@ -37,7 +42,7 @@ export default function ChatPage() {
             Responses are informational. Refer to ECI.gov.in for official info.
           </p>
         </div>
-      </div>
+      </aside>
 
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col max-w-4xl mx-auto w-full h-full">
@@ -46,7 +51,7 @@ export default function ChatPage() {
         <div className="mt-4 flex flex-col gap-4">
           <QuickPrompts onSelect={sendMessage} />
           {error && (
-            <p className="text-sm text-destructive px-2">{error}</p>
+            <p className="text-sm text-destructive px-2" role="alert">{error}</p>
           )}
           <ChatInput onSend={sendMessage} isLoading={isLoading} />
         </div>

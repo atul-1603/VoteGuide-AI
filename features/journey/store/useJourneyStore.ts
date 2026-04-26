@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { doc, getDoc, setDoc } from "firebase/firestore";
-import { db } from "@/lib/firebase";
+import { db } from "@/services/firebase";
 
 interface JourneyState {
   completedSteps: string[];

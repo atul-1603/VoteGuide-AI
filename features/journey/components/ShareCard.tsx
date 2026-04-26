@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import html2canvas from "html2canvas";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { Vote, Download } from "lucide-react";
 
 export function ShareCard({ userName }: { userName: string }) {

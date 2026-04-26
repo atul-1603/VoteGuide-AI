@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useChatStore } from "@/features/chat/store/useChatStore";
+import { useChatStore } from "../store/useChatStore";
 import { GeminiService } from "../services/gemini.service";
 
 export function useGeminiChat() {

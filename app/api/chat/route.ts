@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { GeminiServerService } from "@/lib/gemini-server";
+import { GeminiServerService } from "@/services/gemini-server";
 import {
   chatRequestSchema,
   createErrorResponse,

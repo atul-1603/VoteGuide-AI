@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardHeader, CardContent } from "@/components/ui";
+import { Badge } from "@/components/ui";
 import { CalendarPlus, ChevronDown, ChevronUp } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui";
 import { motion, AnimatePresence } from "framer-motion";
 
 import { getEventStatus } from "../utils/timeline-helpers";

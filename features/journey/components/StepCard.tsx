@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import { JourneyStep } from "@/types/election";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui";
 import { CheckCircle2, Circle, ExternalLink } from "lucide-react";
 
 interface Props {
@@ -20,12 +20,22 @@ export function StepCard({ step, isCompleted, onToggle, index }: Props) {
       transition={{ duration: 0.4, delay: index * 0.1 }}
     >
       <Card 
-        className={`relative overflow-hidden cursor-pointer transition-all duration-300 border-white/10 ${
+        className={`relative overflow-hidden cursor-pointer transition-all duration-300 border-white/10 focus-visible:ring-2 focus-visible:ring-primary outline-none ${
           isCompleted 
             ? "bg-primary/10 border-primary/30" 
             : "bg-card/40 backdrop-blur-sm hover:bg-card/60"
         }`}
         onClick={() => onToggle(step.id)}
+        role="button"
+        tabIndex={0}
+        aria-pressed={isCompleted}
+        aria-label={`Step ${step.order}: ${step.title}. ${isCompleted ? 'Completed' : 'Not completed'}`}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            onToggle(step.id);
+          }
+        }}
       >
         <div className={`absolute left-0 top-0 bottom-0 w-1 ${isCompleted ? "bg-primary" : "bg-white/10"}`} />
         
