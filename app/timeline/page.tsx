@@ -1,13 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { timelineEvents } from "@/data/timeline";
 import { TimelineEvent } from "@/features/timeline/components/TimelineEvent";
 import { TimelineEvent as TimelineEventType } from "@/types/election";
 import { useCalendarAuth } from "@/features/timeline/hooks/useCalendarAuth";
 import { Button } from "@/components/ui/button";
 
-const PHASES = ["All", "Registration", "Campaigning", "Polling", "Results"];
+const PHASES = ["All", "Registration", "Campaigning", "Polling", "Results"] as const;
 
 export default function TimelinePage() {
   const [filter, setFilter] = useState("All");
@@ -23,13 +23,7 @@ export default function TimelinePage() {
     ? timelineEvents 
     : timelineEvents.filter(e => e.phase === filter);
 
-  const handleAddToCalendar = async (event: TimelineEventType) => {
-    if (!accessToken) {
-      setPendingEvent(event);
-      requestToken();
-      return;
-    }
-
+  const addEventToCalendar = useCallback(async (event: TimelineEventType, token: string) => {
     try {
       const response = await fetch("/api/calendar", {
         method: "POST",
@@ -38,26 +32,39 @@ export default function TimelinePage() {
           eventTitle: event.title,
           date: event.date,
           description: event.description,
-          accessToken,
+          accessToken: token,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
-        window.open(data.eventLink, "_blank");
+        if (data.success && data.data?.eventLink) {
+          window.open(data.data.eventLink, "_blank");
+        }
       } else {
-        console.error("Failed to add to calendar");
+        console.error("[Timeline] Failed to add to calendar");
       }
     } catch (error) {
-      console.error(error);
+      console.error("[Timeline] Calendar error:", error);
     }
-  };
+  }, []);
 
-  // If token was just received and we have a pending event, process it
-  if (accessToken && pendingEvent) {
-    handleAddToCalendar(pendingEvent);
-    setPendingEvent(null);
-  }
+  const handleAddToCalendar = useCallback((event: TimelineEventType) => {
+    if (!accessToken) {
+      setPendingEvent(event);
+      requestToken();
+      return;
+    }
+    addEventToCalendar(event, accessToken);
+  }, [accessToken, requestToken, addEventToCalendar]);
+
+  // Process pending event when access token becomes available
+  useEffect(() => {
+    if (accessToken && pendingEvent) {
+      addEventToCalendar(pendingEvent, accessToken);
+      setPendingEvent(null);
+    }
+  }, [accessToken, pendingEvent, addEventToCalendar]);
 
   return (
     <div className="flex-1 bg-background py-12 relative overflow-hidden">

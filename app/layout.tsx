@@ -4,6 +4,7 @@ import "./globals.css";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { AuthProvider } from "@/features/auth/components/AuthProvider";
+import { GoogleTranslate } from "@/components/layout/GoogleTranslate";
 
 const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair-display" });
 const dmSans = DM_Sans({ subsets: ["latin"], variable: "--font-dm-sans" });
@@ -12,8 +13,6 @@ export const metadata: Metadata = {
   title: "VoteGuide — AI Election Assistant",
   description: "Your intelligent conversational interface for the election process, timelines, voter registration, and rights.",
 };
-
-import { GoogleTranslate } from "@/components/layout/GoogleTranslate";
 
 export default function RootLayout({
   children,

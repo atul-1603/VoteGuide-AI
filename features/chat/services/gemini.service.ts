@@ -1,4 +1,5 @@
 import { Message } from "@/types/election";
+import type { ApiErrorResponse } from "@/types/api";
 
 export class GeminiService {
   /**
@@ -16,9 +17,9 @@ export class GeminiService {
     if (!response.ok) {
       let errorMessage = "Failed to communicate with AI";
       try {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorMessage;
-      } catch (e) {
+        const errorData: ApiErrorResponse = await response.json();
+        errorMessage = errorData.message || errorMessage;
+      } catch {
         errorMessage = response.statusText;
       }
       throw new Error(errorMessage);

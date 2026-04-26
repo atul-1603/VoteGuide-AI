@@ -1,20 +1,39 @@
 import { NextRequest, NextResponse } from "next/server";
 import { GeminiServerService } from "@/lib/gemini-server";
+import {
+  chatRequestSchema,
+  createErrorResponse,
+  API_ERROR_CODES,
+} from "@/types/api";
 
 export const runtime = "edge";
 
 export async function POST(req: NextRequest) {
   try {
-    const { messages } = await req.json();
+    const body: unknown = await req.json();
+    const parsed = chatRequestSchema.safeParse(body);
 
-    if (!messages || !Array.isArray(messages)) {
-      return NextResponse.json({ error: "Invalid request format" }, { status: 400 });
+    if (!parsed.success) {
+      return NextResponse.json(
+        createErrorResponse(
+          parsed.error.issues[0]?.message ?? "Invalid request format",
+          API_ERROR_CODES.VALIDATION_ERROR
+        ),
+        { status: 400 }
+      );
     }
 
+    const { messages } = parsed.data;
     const responseBody = await GeminiServerService.streamGenerateContent(messages);
 
     if (!responseBody) {
-      return NextResponse.json({ error: "Failed to initialize stream" }, { status: 500 });
+      return NextResponse.json(
+        createErrorResponse(
+          "Failed to initialize stream",
+          API_ERROR_CODES.STREAM_INIT_FAILED
+        ),
+        { status: 500 }
+      );
     }
 
     const encoder = new TextEncoder();
@@ -35,7 +54,7 @@ export async function POST(req: NextRequest) {
             }
           }
         } catch (e) {
-          console.error("Streaming error:", e);
+          console.error("[Chat API] Streaming error:", e);
         } finally {
           controller.close();
         }
@@ -49,10 +68,10 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error: unknown) {
-    console.error("❌ Chat API error:", error);
+    console.error("[Chat API] Error:", error);
     const message = error instanceof Error ? error.message : "Internal Server Error";
     return NextResponse.json(
-      { error: message },
+      createErrorResponse(message, API_ERROR_CODES.INTERNAL_ERROR),
       { status: 500 }
     );
   }

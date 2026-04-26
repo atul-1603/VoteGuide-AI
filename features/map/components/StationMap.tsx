@@ -114,9 +114,9 @@ export function StationMap({ center, zoom, isLoaded, onMarkerClick, destinationI
           },
           (
             result: google.maps.DirectionsResult | null,
-            status: google.maps.DirectionsStatus
+            status: string
           ) => {
-            if (status === window.google.maps.DirectionsStatus.OK && result) {
+            if (status === "OK" && result) {
               directionsRendererRef.current?.setDirections(result);
               // Hide other markers if needed, or just let them stay
             } else {

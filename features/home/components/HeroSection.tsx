@@ -1,55 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, CalendarDays } from "lucide-react";
-import { timelineEvents } from "@/data/timeline";
-import { TimelineEvent } from "@/types/election";
-import { calculateTimeLeft } from "@/lib/date-utils";
+import { useCountdown } from "@/features/shared/hooks/useCountdown";
 
 export function HeroSection() {
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [targetEvent, setTargetEvent] = useState<TimelineEvent | null>(null);
-  const [isFinished, setIsFinished] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    const timer = setInterval(() => {
-      const now = new Date();
-      
-      // Find the next relevant event
-      const nextEvent = timelineEvents.find(e => {
-        const eventDate = new Date(e.date);
-        const endDate = e.endDate ? new Date(e.endDate) : null;
-        // If there's an end date, the event is relevant until it's over
-        if (endDate) return now <= endDate;
-        // Otherwise it's relevant until the event date
-        return now <= eventDate;
-      });
-
-      if (!nextEvent) {
-        setIsFinished(true);
-        clearInterval(timer);
-        return;
-      }
-
-      setTargetEvent(nextEvent);
-      setIsFinished(false);
-
-      const eventDate = new Date(nextEvent.date);
-      const endDate = nextEvent.endDate ? new Date(nextEvent.endDate) : null;
-      
-      const isOngoing = endDate && now >= eventDate && now <= endDate;
-      const targetTime = isOngoing ? endDate : eventDate;
-      
-      setTimeLeft(calculateTimeLeft(targetTime));
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
+  const { timeLeft, targetEvent, isFinished, isOngoing, mounted } = useCountdown();
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -66,15 +24,9 @@ export function HeroSection() {
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
 
-  const getLabel = () => {
+  const getLabel = (): string => {
     if (isFinished) return "Election process completed";
     if (!targetEvent) return "Loading schedule...";
-    
-    const now = new Date();
-    const eventDate = new Date(targetEvent.date);
-    const endDate = targetEvent.endDate ? new Date(targetEvent.endDate) : null;
-    const isOngoing = endDate && now >= eventDate && now <= endDate;
-
     if (isOngoing) return `${targetEvent.title} ends in:`;
     return `Time left for ${targetEvent.title}`;
   };

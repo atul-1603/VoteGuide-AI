@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/features/auth/store/useAuthStore";
+import { useCountdown } from "@/features/shared/hooks/useCountdown";
 
 import { 
   MessageSquare, 
@@ -21,51 +22,19 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { timelineEvents } from "@/data/timeline";
-import { TimelineEvent } from "@/types/election";
 import { Progress } from "@/components/ui/progress";
-import { calculateTimeLeft } from "@/lib/date-utils";
+import { changeLanguage } from "@/components/layout/GoogleTranslate";
 
 export default function DashboardPage() {
   const { user, loading, logOut } = useAuthStore();
   const router = useRouter();
-  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
-  const [nextEvent, setNextEvent] = useState<TimelineEvent | null>(null);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const { timeLeft, targetEvent, isOngoing, mounted } = useCountdown();
 
   useEffect(() => {
     if (!loading && !user) {
       router.push("/login");
     }
   }, [user, loading, router]);
-
-  useEffect(() => {
-    const updateCountdown = () => {
-      const now = new Date();
-      const event = timelineEvents.find(e => {
-        const eventDate = new Date(e.date);
-        const endDate = e.endDate ? new Date(e.endDate) : null;
-        if (endDate) return now <= endDate;
-        return now <= eventDate;
-      });
-
-      if (event) {
-        setNextEvent(event);
-        const eventDate = new Date(event.date);
-        const endDate = event.endDate ? new Date(event.endDate) : null;
-        const isOngoing = endDate && now >= eventDate && now <= endDate;
-        const targetTime = isOngoing ? endDate : eventDate;
-        setTimeLeft(calculateTimeLeft(targetTime));
-      }
-    };
-
-    const interval = setInterval(updateCountdown, 1000);
-    updateCountdown();
-    return () => clearInterval(interval);
-  }, []);
 
   if (loading || !user) {
     return (
@@ -78,6 +47,10 @@ export default function DashboardPage() {
   // Calculate overall progress through timeline
   const completedCount = timelineEvents.filter(e => new Date(e.date) < new Date()).length;
   const progressPercent = (completedCount / timelineEvents.length) * 100;
+
+  // Determine the slice of timeline events to show in the sidebar snapshot
+  const snapshotStart = completedCount > 0 ? completedCount - 1 : 0;
+  const snapshotEvents = timelineEvents.slice(snapshotStart, snapshotStart + 3);
 
   return (
     <div className="flex-1 bg-background pb-12">
@@ -116,16 +89,16 @@ export default function DashboardPage() {
               className="bg-gradient-to-br from-primary/20 to-secondary/10 border-white/10 overflow-hidden"
               role="region"
               aria-live="polite"
-              aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${nextEvent?.endDate && new Date() >= new Date(nextEvent.date) ? nextEvent.title + ' end' : nextEvent?.title}`}
+              aria-label={`Countdown: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining for ${isOngoing ? targetEvent?.title + ' end' : targetEvent?.title}`}
             >
               <CardContent className="p-8">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-8">
                   <div className="space-y-2 text-center md:text-left">
                     <Badge className="bg-primary/20 text-primary hover:bg-primary/30 mb-2">LIVE COUNTDOWN</Badge>
                     <h2 className="text-2xl font-bold text-white">
-                      {nextEvent?.endDate && new Date() >= new Date(nextEvent.date) 
-                        ? `${nextEvent.title} Ends In:` 
-                        : `Next: ${nextEvent?.title}`}
+                      {isOngoing
+                        ? `${targetEvent?.title} Ends In:` 
+                        : `Next: ${targetEvent?.title}`}
                     </h2>
                     <p className="text-muted-foreground text-sm max-w-xs">
                       The election cycle is moving fast. Ensure you are ready before the next phase begins.
@@ -264,19 +237,19 @@ export default function DashboardPage() {
               </CardHeader>
               <CardContent className="p-0">
                 <div className="divide-y divide-white/5">
-                  {mounted && timelineEvents.slice(completedCount > 0 ? completedCount - 1 : 0, (completedCount > 0 ? completedCount - 1 : 0) + 3).map((event) => {
+                  {mounted && snapshotEvents.map((event) => {
                     const isPast = new Date(event.date) < new Date();
-                    const isOngoing = event.endDate && new Date() >= new Date(event.date) && new Date() <= new Date(event.endDate);
+                    const eventIsOngoing = event.endDate && new Date() >= new Date(event.date) && new Date() <= new Date(event.endDate);
                     return (
                       <div key={event.id} className="p-4 flex items-start gap-3">
-                        <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${isOngoing ? "bg-green-400 animate-pulse" : isPast ? "bg-muted" : "bg-primary"}`} />
+                        <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${eventIsOngoing ? "bg-green-400 animate-pulse" : isPast ? "bg-muted" : "bg-primary"}`} />
                         <div className="flex-1 min-w-0">
-                          <p className={`text-sm font-bold truncate ${isPast && !isOngoing ? "text-muted-foreground line-through" : "text-white"}`}>
+                          <p className={`text-sm font-bold truncate ${isPast && !eventIsOngoing ? "text-muted-foreground line-through" : "text-white"}`}>
                             {event.title}
                           </p>
                           <p className="text-[10px] text-muted-foreground uppercase">{event.phase} • {new Date(event.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</p>
                         </div>
-                        {isOngoing && <Badge className="text-[10px] bg-green-500/20 text-green-400 border-green-500/20">LIVE</Badge>}
+                        {eventIsOngoing && <Badge className="text-[10px] bg-green-500/20 text-green-400 border-green-500/20">LIVE</Badge>}
                       </div>
                     );
                   })}
@@ -331,8 +304,7 @@ export default function DashboardPage() {
               <CardContent>
                 <div className="flex justify-between items-center bg-white/5 p-3 rounded-lg">
                   <span className="text-sm text-white">English (Global)</span>
-                  {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                  <Button variant="ghost" size="sm" className="h-7 text-xs text-primary" onClick={() => (window as any).google?.translate?.TranslateElement?.showDropdown?.()}>
+                  <Button variant="ghost" size="sm" className="h-7 text-xs text-primary" onClick={() => changeLanguage("en")}>
                     Change
                   </Button>
                 </div>

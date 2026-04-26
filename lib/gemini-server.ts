@@ -1,4 +1,5 @@
 import { Message } from "@/types/election";
+import type { GeminiSSEData } from "@/types/api";
 
 const SYSTEM_INSTRUCTION = `You are VoteGuide, a highly knowledgeable, helpful, and neutral AI election assistant. 
 Your goal is to guide citizens through the election process, explain voter registration, ID requirements, and their rights.
@@ -55,13 +56,15 @@ export class GeminiServerService {
     for (const line of lines) {
       if (line.startsWith("data: ")) {
         try {
-          const data = JSON.parse(line.slice(6));
+          const data: GeminiSSEData = JSON.parse(line.slice(6));
           const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
           if (text) {
             result += text;
           }
         } catch {
-          // Skip invalid JSON
+          if (process.env.NODE_ENV === "development") {
+            console.warn("[Gemini SSE] Skipped unparseable chunk:", line.slice(0, 100));
+          }
         }
       }
     }

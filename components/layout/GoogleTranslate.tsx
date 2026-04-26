@@ -2,13 +2,42 @@
 
 import { useEffect } from "react";
 
+// ─── Google Translate Typings ───────────────────────────────────────
+
+interface GoogleTranslateElement {
+  new (
+    options: {
+      pageLanguage: string;
+      layout: number;
+      autoDisplay: boolean;
+    },
+    elementId: string
+  ): void;
+}
+
+interface GoogleTranslateElementConstructor extends GoogleTranslateElement {
+  InlineLayout: {
+    SIMPLE: number;
+    HORIZONTAL: number;
+    VERTICAL: number;
+  };
+}
+
+interface GoogleTranslateAPI {
+  TranslateElement: GoogleTranslateElementConstructor;
+}
+
 declare global {
   interface Window {
     googleTranslateElementInit: () => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    google: any;
+    google?: {
+      translate?: GoogleTranslateAPI;
+      accounts?: typeof google.accounts;
+    };
   }
 }
+
+// ─── Component ──────────────────────────────────────────────────────
 
 export function GoogleTranslate() {
   useEffect(() => {
@@ -25,7 +54,7 @@ export function GoogleTranslate() {
     };
 
     window.googleTranslateElementInit = () => {
-      if (window.google && window.google.translate) {
+      if (window.google?.translate) {
         new window.google.translate.TranslateElement(
           {
             pageLanguage: "en",
@@ -56,6 +85,8 @@ export function GoogleTranslate() {
   );
 }
 
+// ─── Language Switcher ──────────────────────────────────────────────
+
 let isChanging = false;
 
 export function changeLanguage(langCode: string) {
@@ -72,7 +103,7 @@ export function changeLanguage(langCode: string) {
   document.cookie = `googtrans=${cookieValue}; path=/; domain=${domain};`;
   
   // 2. Try to trigger the select element if it exists (for immediate effect in some cases)
-  const select = document.querySelector(".goog-te-combo") as HTMLSelectElement;
+  const select = document.querySelector(".goog-te-combo") as HTMLSelectElement | null;
   if (select) {
     select.value = langCode;
     select.dispatchEvent(new Event("change"));

@@ -1,13 +1,28 @@
 import { NextRequest, NextResponse } from "next/server";
+import {
+  calendarRequestSchema,
+  createSuccessResponse,
+  createErrorResponse,
+  API_ERROR_CODES,
+  type CalendarResponseData,
+} from "@/types/api";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = (await req.json()) as { eventTitle: string; date: string; description: string; accessToken: string };
-    const { eventTitle, date, description, accessToken } = body;
+    const body: unknown = await req.json();
+    const parsed = calendarRequestSchema.safeParse(body);
 
-    if (!accessToken) {
-      return NextResponse.json({ error: "No access token provided" }, { status: 401 });
+    if (!parsed.success) {
+      return NextResponse.json(
+        createErrorResponse(
+          parsed.error.issues[0]?.message ?? "Invalid request format",
+          API_ERROR_CODES.VALIDATION_ERROR
+        ),
+        { status: 400 }
+      );
     }
+
+    const { eventTitle, date, description, accessToken } = parsed.data;
 
     const startDate = new Date(date);
     const endDate = new Date(startDate);
@@ -27,8 +42,8 @@ export async function POST(req: NextRequest) {
       reminders: {
         useDefault: false,
         overrides: [
-          { method: "email", minutes: 24 * 60 },
-          { method: "popup", minutes: 60 },
+          { method: "email" as const, minutes: 24 * 60 },
+          { method: "popup" as const, minutes: 60 },
         ],
       },
     };
@@ -43,18 +58,30 @@ export async function POST(req: NextRequest) {
     });
 
     if (!response.ok) {
-      const errorData = await response.json();
-      console.error("Calendar API Error:", errorData);
-      return NextResponse.json({ error: "Failed to create calendar event" }, { status: response.status });
+      let errorDetail = "Failed to create calendar event";
+      try {
+        const errorData = await response.json();
+        errorDetail = errorData?.error?.message ?? errorDetail;
+      } catch {
+        // Response body was not valid JSON — use default message
+      }
+      console.error("[Calendar API] Google Calendar error:", errorDetail);
+      return NextResponse.json(
+        createErrorResponse(errorDetail, API_ERROR_CODES.EXTERNAL_API_ERROR),
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
-    return NextResponse.json({ eventLink: data.htmlLink });
-  } catch (error) {
-    console.error("❌ Calendar route error:", error);
-    return NextResponse.json({ 
-      error: "Internal Server Error", 
-      details: error instanceof Error ? error.message : String(error) 
-    }, { status: 500 });
+    return NextResponse.json(
+      createSuccessResponse<CalendarResponseData>({ eventLink: data.htmlLink })
+    );
+  } catch (error: unknown) {
+    console.error("[Calendar API] Error:", error);
+    const message = error instanceof Error ? error.message : "Internal Server Error";
+    return NextResponse.json(
+      createErrorResponse(message, API_ERROR_CODES.INTERNAL_ERROR),
+      { status: 500 }
+    );
   }
 }

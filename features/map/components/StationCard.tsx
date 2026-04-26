@@ -34,6 +34,16 @@ export function StationCard({ stationId, onGetDirections }: Props) {
 
   const station = mockStationDetails[stationId];
 
+  if (!station) {
+    return (
+      <Card className="bg-card/40 backdrop-blur-md border-white/10 h-full flex flex-col items-center justify-center p-8 text-center min-h-[300px]">
+        <MapPin className="w-12 h-12 text-destructive mb-4 opacity-50" />
+        <h3 className="font-medium text-white mb-2">Station Not Found</h3>
+        <p className="text-sm text-muted-foreground">The selected polling station could not be loaded. Please try another.</p>
+      </Card>
+    );
+  }
+
   return (
     <Card className="bg-card/60 backdrop-blur-md border-white/10 h-full flex flex-col shadow-xl">
       <CardHeader className="pb-3 border-b border-white/10">

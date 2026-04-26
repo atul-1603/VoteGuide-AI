@@ -46,7 +46,7 @@ export function ShareCard({ userName }: { userName: string }) {
             <Vote className="w-10 h-10 text-white" />
           </div>
           <h4 className="font-serif text-2xl font-bold text-white mb-1 uppercase tracking-wide">Voter Ready</h4>
-          <p className="text-muted-foreground text-sm font-medium mb-6">#VoteGuide2024</p>
+          <p className="text-muted-foreground text-sm font-medium mb-6">#VoteGuide2026</p>
           <div className="bg-white/10 px-4 py-2 rounded-full border border-white/20 backdrop-blur-md">
             <p className="text-white font-medium">{userName}</p>
           </div>
